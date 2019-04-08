@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1f829502-1322-4c6a-9aad-e738750f8be0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/StockServiceLibrary/StockService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="d6195d9a-26d0-47ea-b43f-99d35743a68f" SourceId="1" SourceUrl="http://localhost:8733/StockServiceLibrary/StockService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="6ebf57ae-d439-42ea-9d02-0e511f731b0b" SourceId="1" SourceUrl="http://localhost:8733/StockServiceLibrary/StockService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="1f3aae5c-30e5-47ed-a975-5a7fc8044b96" SourceId="1" SourceUrl="http://localhost:8733/StockServiceLibrary/StockService/mex" />
+    <MetadataFile FileName="StockServiceLibrary.DataContract.xsd" MetadataType="Schema" ID="7dca82a9-cc6f-4348-bc48-9630a6ad969f" SourceId="1" SourceUrl="http://localhost:8733/StockServiceLibrary/StockService/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="31b8f270-1292-490e-8f58-73d87ccf95e9" SourceId="1" SourceUrl="http://localhost:8733/StockServiceLibrary/StockService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

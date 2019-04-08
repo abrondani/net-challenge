@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron m-t-20">
+    <h1>.NET Andres Brondani Challenge</h1>
+    <h2>Assignment</h2>
+    <p>
+        The goal of this exercise is to create a simple browser-based chat application using .NET.
+    </p>
+    <p>
+        This application should allow several users to talk in a chatroom and also to get stock quotes
+        from an API using a specific command.
+    </p>
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("See Chat Page", "Index", "Chat", routeValues: null, htmlAttributes: new { @class = "btn btn-primary btn-lg" })
+    }
+    else
+    {
+        @Html.ActionLink("Login to see Chat Page", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    }
+</div>

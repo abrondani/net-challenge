@@ -1,0 +1,10 @@
+﻿@model IEnumerable<ChatWebApplication.Models.Chat>
+
+@foreach (var item in Model)
+{
+    <h5>
+        <small class="text-muted">@DateTime.FromFileTime(item.TimeStamp).ToString("dd/MM/yy HH:mm:ss")</small>
+        @item.UserName
+    </h5>
+    <p class="text-info">@item.Message</p>
+}
