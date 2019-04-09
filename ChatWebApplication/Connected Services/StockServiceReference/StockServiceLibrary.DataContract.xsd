@@ -5,9 +5,12 @@
       <xs:element minOccurs="0" name="Close" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CloseTyped" type="xs:decimal" />
       <xs:element minOccurs="0" name="Date" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DateTyped" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="High" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Low" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Open" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Success" type="xs:boolean" />
       <xs:element minOccurs="0" name="Symbol" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Time" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Volume" nillable="true" type="xs:string" />

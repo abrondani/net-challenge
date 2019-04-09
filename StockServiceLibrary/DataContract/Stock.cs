@@ -10,17 +10,55 @@ namespace StockServiceLibrary.DataContract
     [DataContract]
     public class Stock
     {
+        private string _date;
+        private string _open;
+        private string _close;
+
         [DataMember]
         public string Symbol { get; set; }
 
         [DataMember]
-        public string Date { get; set; }
+        public string Date
+        {
+            get { return _date; }
+            set
+            {
+                _date = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    DateTime outValue;
+                    DateTyped = (DateTime.TryParseExact(value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out outValue)) ? (DateTime?)outValue : null;
+                }
+                else
+                    DateTyped = null;
+            }
+        }
+
+        [DataMember]
+        public DateTime? DateTyped { get; set; }
 
         [DataMember]
         public string Time { get; set; }
 
         [DataMember]
-        public string Open { get; set; }
+        public string Open
+        {
+            get { return _open; }
+            set
+            {
+                _open = value;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    decimal outValue;
+                    decimal.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out outValue);
+                    OpenTyped = outValue;
+                }
+                else
+                    OpenTyped = 0;
+            }
+        }
+
+        public decimal OpenTyped { get; set; }
 
         [DataMember]
         public string High { get; set; }
@@ -28,7 +66,6 @@ namespace StockServiceLibrary.DataContract
         [DataMember]
         public string Low { get; set; }
 
-        private string _close;
         [DataMember]
         public string Close
         {
@@ -38,11 +75,12 @@ namespace StockServiceLibrary.DataContract
                 _close = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    CloseTyped = decimal.Parse(value, System.Globalization.CultureInfo.InvariantCulture);
+                    decimal outValue;
+                    decimal.TryParse(value, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out outValue);
+                    CloseTyped = outValue;
                 }
                 else
                     CloseTyped = 0;
-
             }
         }
 
@@ -51,5 +89,11 @@ namespace StockServiceLibrary.DataContract
 
         [DataMember]
         public string Volume { get; set; }
+
+        [DataMember]
+        public bool Success { get; set; }
+
+        [DataMember]
+        public string ErrorMessage { get; set; }
     }
 }
