@@ -1,0 +1,14 @@
+.vs
+packages
+BotWindowsService/bin
+BotWindowsService/obj
+ChatWebApplication/bin
+ChatWebApplication/obj
+ChatWebApplication.Tests/bin
+ChatWebApplication.Tests/obj
+StockConsoleApp/bin
+StockConsoleApp/obj
+StockServiceController/bin
+StockServiceController/obj
+StockServiceLibrary/bin
+StockServiceLibrary/obj
