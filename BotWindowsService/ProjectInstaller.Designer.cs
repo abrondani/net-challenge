@@ -33,13 +33,14 @@
             // 
             // serviceProcessInstaller1
             // 
+            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             this.serviceProcessInstaller1.Password = null;
             this.serviceProcessInstaller1.Username = null;
             // 
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "This service starts WCF host and RabbitMQ request queue.";
-            this.serviceInstaller1.DisplayName = "Andres Brondani Net Challenge Service";
+            this.serviceInstaller1.DisplayName = "Bot Windows Service";
             this.serviceInstaller1.ServiceName = "NetChallengeService";
             // 
             // ProjectInstaller

@@ -27,8 +27,7 @@ namespace StockServiceLibrary.DataContract
                 if (!string.IsNullOrEmpty(value))
                 {
                     DateTime outValue;
-                    DateTime.TryParseExact(value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out outValue);
-                    DateTyped = outValue;
+                    DateTyped = (DateTime.TryParseExact(value, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out outValue)) ? (DateTime?)outValue : null;
                 }
                 else
                     DateTyped = null;
