@@ -32,6 +32,12 @@ namespace StockServiceController.StockServiceReference {
         private string DateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<System.DateTime> DateTypedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ErrorMessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string HighField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -39,6 +45,9 @@ namespace StockServiceController.StockServiceReference {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string OpenField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool SuccessField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SymbolField;
@@ -99,6 +108,32 @@ namespace StockServiceController.StockServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> DateTyped {
+            get {
+                return this.DateTypedField;
+            }
+            set {
+                if ((this.DateTypedField.Equals(value) != true)) {
+                    this.DateTypedField = value;
+                    this.RaisePropertyChanged("DateTyped");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ErrorMessage {
+            get {
+                return this.ErrorMessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ErrorMessageField, value) != true)) {
+                    this.ErrorMessageField = value;
+                    this.RaisePropertyChanged("ErrorMessage");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string High {
             get {
                 return this.HighField;
@@ -133,6 +168,19 @@ namespace StockServiceController.StockServiceReference {
                 if ((object.ReferenceEquals(this.OpenField, value) != true)) {
                     this.OpenField = value;
                     this.RaisePropertyChanged("Open");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Success {
+            get {
+                return this.SuccessField;
+            }
+            set {
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
                 }
             }
         }

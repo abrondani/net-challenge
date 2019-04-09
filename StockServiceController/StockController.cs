@@ -40,7 +40,10 @@ namespace StockServiceController
             using (var wcfClient = new StockServiceReference.StockServiceClient())
             {
                 var stock = wcfClient.GetStock(stock_code);
-                wcfClient.SendMessage($"{stock.Symbol} quote is {stock.CloseTyped.ToString("C2")} per share", queue, null);
+                if (stock.Success)
+                    wcfClient.SendMessage($"{stock.Symbol} quote is {stock.CloseTyped.ToString("C2")} per share", queue, null);
+                else
+                    wcfClient.SendMessage(stock.ErrorMessage, queue, null);
                 wcfClient.Close();
             }
         }

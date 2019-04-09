@@ -15,7 +15,18 @@ namespace StockServiceLibrary
     {
         public Stock GetStock(string stock_code)
         {
-            var lines = GetFileLines(stock_code);
+            List<string> lines;
+            var stock = new Stock();
+
+            try
+            {
+                lines = GetFileLines(stock_code);
+            }
+            catch (Exception)
+            {
+                stock.ErrorMessage = "Service unavailable";
+                return stock;
+            }
 
             var line_header = lines[0].Split(',');
             var line_body = lines[1].Split(',');
@@ -24,13 +35,19 @@ namespace StockServiceLibrary
             for (int i = 0; i < line_header.Length; i++)
                 keyPairLine.Add(line_header[i], line_body[i]);
 
-            var stock = new Stock();
             foreach (var item in keyPairLine)
             {
                 var property = typeof(Stock).GetProperty(item.Key);
                 if (property != null) property.SetValue(stock, item.Value, null);
             }
+
+            if (stock.DateTyped.HasValue)
+                stock.Success = true;
+            else
+                stock.ErrorMessage = "Stock code not found";
+
             return stock;
+
         }
 
         public List<string> GetMessages(string queue)
@@ -44,7 +61,7 @@ namespace StockServiceLibrary
 
         public void SendMessage(string message, string queue, string exchange)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = ServiceConfigurationSection.Instance.RabbitMQ_HostName };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
@@ -60,7 +77,7 @@ namespace StockServiceLibrary
 
         List<BasicGetResult> ReceiveMessages(string queue)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = ServiceConfigurationSection.Instance.RabbitMQ_HostName };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
