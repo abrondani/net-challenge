@@ -234,6 +234,67 @@ namespace ChatWebApplication.StockServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="QueueMessage", Namespace="http://schemas.datacontract.org/2004/07/StockServiceLibrary.DataContract")]
+    [System.SerializableAttribute()]
+    public partial class QueueMessage : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UserNameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="StockServiceReference.IStockService")]
     public interface IStockService {
@@ -245,16 +306,28 @@ namespace ChatWebApplication.StockServiceReference {
         System.Threading.Tasks.Task<ChatWebApplication.StockServiceReference.Stock> GetStockAsync(string stock_cod);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/SendMessage", ReplyAction="http://tempuri.org/IStockService/SendMessageResponse")]
-        void SendMessage(string message, string queue, string exchange);
+        ChatWebApplication.StockServiceReference.QueueMessage SendMessage(string message, string queue, string exchange, string user_name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/SendMessage", ReplyAction="http://tempuri.org/IStockService/SendMessageResponse")]
-        System.Threading.Tasks.Task SendMessageAsync(string message, string queue, string exchange);
+        System.Threading.Tasks.Task<ChatWebApplication.StockServiceReference.QueueMessage> SendMessageAsync(string message, string queue, string exchange, string user_name);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/GetMessages", ReplyAction="http://tempuri.org/IStockService/GetMessagesResponse")]
         System.Collections.Generic.List<string> GetMessages(string queue);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/GetMessages", ReplyAction="http://tempuri.org/IStockService/GetMessagesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<string>> GetMessagesAsync(string queue);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/ToByteArray", ReplyAction="http://tempuri.org/IStockService/ToByteArrayResponse")]
+        byte[] ToByteArray(ChatWebApplication.StockServiceReference.QueueMessage obj);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/ToByteArray", ReplyAction="http://tempuri.org/IStockService/ToByteArrayResponse")]
+        System.Threading.Tasks.Task<byte[]> ToByteArrayAsync(ChatWebApplication.StockServiceReference.QueueMessage obj);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/FromByteArray", ReplyAction="http://tempuri.org/IStockService/FromByteArrayResponse")]
+        ChatWebApplication.StockServiceReference.QueueMessage FromByteArray(byte[] data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStockService/FromByteArray", ReplyAction="http://tempuri.org/IStockService/FromByteArrayResponse")]
+        System.Threading.Tasks.Task<ChatWebApplication.StockServiceReference.QueueMessage> FromByteArrayAsync(byte[] data);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -292,12 +365,12 @@ namespace ChatWebApplication.StockServiceReference {
             return base.Channel.GetStockAsync(stock_cod);
         }
         
-        public void SendMessage(string message, string queue, string exchange) {
-            base.Channel.SendMessage(message, queue, exchange);
+        public ChatWebApplication.StockServiceReference.QueueMessage SendMessage(string message, string queue, string exchange, string user_name) {
+            return base.Channel.SendMessage(message, queue, exchange, user_name);
         }
         
-        public System.Threading.Tasks.Task SendMessageAsync(string message, string queue, string exchange) {
-            return base.Channel.SendMessageAsync(message, queue, exchange);
+        public System.Threading.Tasks.Task<ChatWebApplication.StockServiceReference.QueueMessage> SendMessageAsync(string message, string queue, string exchange, string user_name) {
+            return base.Channel.SendMessageAsync(message, queue, exchange, user_name);
         }
         
         public System.Collections.Generic.List<string> GetMessages(string queue) {
@@ -306,6 +379,22 @@ namespace ChatWebApplication.StockServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<string>> GetMessagesAsync(string queue) {
             return base.Channel.GetMessagesAsync(queue);
+        }
+        
+        public byte[] ToByteArray(ChatWebApplication.StockServiceReference.QueueMessage obj) {
+            return base.Channel.ToByteArray(obj);
+        }
+        
+        public System.Threading.Tasks.Task<byte[]> ToByteArrayAsync(ChatWebApplication.StockServiceReference.QueueMessage obj) {
+            return base.Channel.ToByteArrayAsync(obj);
+        }
+        
+        public ChatWebApplication.StockServiceReference.QueueMessage FromByteArray(byte[] data) {
+            return base.Channel.FromByteArray(data);
+        }
+        
+        public System.Threading.Tasks.Task<ChatWebApplication.StockServiceReference.QueueMessage> FromByteArrayAsync(byte[] data) {
+            return base.Channel.FromByteArrayAsync(data);
         }
     }
 }

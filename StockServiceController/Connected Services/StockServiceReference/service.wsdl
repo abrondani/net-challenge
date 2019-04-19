@@ -26,6 +26,18 @@
   <wsdl:message name="IStockService_GetMessages_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMessagesResponse" />
   </wsdl:message>
+  <wsdl:message name="IStockService_ToByteArray_InputMessage">
+    <wsdl:part name="parameters" element="tns:ToByteArray" />
+  </wsdl:message>
+  <wsdl:message name="IStockService_ToByteArray_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ToByteArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStockService_FromByteArray_InputMessage">
+    <wsdl:part name="parameters" element="tns:FromByteArray" />
+  </wsdl:message>
+  <wsdl:message name="IStockService_FromByteArray_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FromByteArrayResponse" />
+  </wsdl:message>
   <wsdl:portType name="IStockService">
     <wsdl:operation name="GetStock">
       <wsdl:input wsaw:Action="http://tempuri.org/IStockService/GetStock" message="tns:IStockService_GetStock_InputMessage" />
@@ -38,6 +50,14 @@
     <wsdl:operation name="GetMessages">
       <wsdl:input wsaw:Action="http://tempuri.org/IStockService/GetMessages" message="tns:IStockService_GetMessages_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IStockService/GetMessagesResponse" message="tns:IStockService_GetMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ToByteArray">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStockService/ToByteArray" message="tns:IStockService_ToByteArray_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStockService/ToByteArrayResponse" message="tns:IStockService_ToByteArray_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FromByteArray">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStockService/FromByteArray" message="tns:IStockService_FromByteArray_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStockService/FromByteArrayResponse" message="tns:IStockService_FromByteArray_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="basic" type="tns:IStockService">
@@ -62,6 +82,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetMessages">
       <soap:operation soapAction="http://tempuri.org/IStockService/GetMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ToByteArray">
+      <soap:operation soapAction="http://tempuri.org/IStockService/ToByteArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FromByteArray">
+      <soap:operation soapAction="http://tempuri.org/IStockService/FromByteArray" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using System.Text;
 
@@ -59,7 +60,7 @@ namespace StockServiceLibrary
             return result;
         }
 
-        public void SendMessage(string message, string queue, string exchange)
+        public QueueMessage SendMessage(string message, string queue, string exchange, string user_name)
         {
             var factory = new ConnectionFactory() { HostName = ServiceConfigurationSection.Instance.RabbitMQ_HostName };
             using (var connection = factory.CreateConnection())
@@ -71,7 +72,9 @@ namespace StockServiceLibrary
                     channel.ExchangeDeclare(exchange, ExchangeType.Direct);
                     channel.QueueBind(queue, exchange, queue, null);
                 }
-                channel.BasicPublish(exchange ?? string.Empty, queue, body: Encoding.UTF8.GetBytes(message));
+                var result = new QueueMessage { Message = message, UserName = user_name };
+                channel.BasicPublish(exchange ?? string.Empty, queue, body: ToByteArray(result));
+                return result;
             }
         }
 
@@ -109,6 +112,26 @@ namespace StockServiceLibrary
                     result.Add(reader.ReadLine());
             }
             return result;
+        }
+
+        public byte[] ToByteArray(QueueMessage obj)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
+        }
+
+        public QueueMessage FromByteArray(byte[] data)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream(data))
+            {
+                object obj = bf.Deserialize(ms);
+                return (QueueMessage)obj;
+            }
         }
     }
 }

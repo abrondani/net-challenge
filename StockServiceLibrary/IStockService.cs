@@ -11,9 +11,15 @@ namespace StockServiceLibrary
         Stock GetStock(string stock_cod);
 
         [OperationContract]
-        void SendMessage(string message, string queue, string exchange);
+        QueueMessage SendMessage(string message, string queue, string exchange, string user_name);
 
         [OperationContract]
         List<string> GetMessages(string queue);
+
+        [OperationContract]
+        byte[] ToByteArray(QueueMessage obj);
+
+        [OperationContract]
+        QueueMessage FromByteArray(byte[] data);
     }
 }

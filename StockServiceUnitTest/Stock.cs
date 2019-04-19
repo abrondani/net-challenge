@@ -20,7 +20,7 @@ namespace StockServiceUnitTest
             var test_message = "This is a test Message";
             var service = new StockServiceLibrary.StockService();
 
-            service.SendMessage(test_message, "test_queue", null);
+            service.SendMessage(test_message, "test_queue", null, null);
             var messages = service.GetMessages("test_queue");
 
             Assert.IsTrue(messages.Contains(test_message), "Message not received");

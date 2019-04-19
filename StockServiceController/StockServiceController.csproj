@@ -71,6 +71,9 @@
     <None Include="Connected Services\StockServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\StockServiceReference\StockServiceController.StockServiceReference.QueueMessage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\StockServiceReference\StockServiceController.StockServiceReference.Stock.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

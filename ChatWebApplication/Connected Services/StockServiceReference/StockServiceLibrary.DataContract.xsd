@@ -17,4 +17,11 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Stock" nillable="true" type="tns:Stock" />
+  <xs:complexType name="QueueMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QueueMessage" nillable="true" type="tns:QueueMessage" />
 </xs:schema>

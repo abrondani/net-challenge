@@ -1,11 +1,6 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StockServiceController
 {
@@ -30,20 +25,19 @@ namespace StockServiceController
 
         void Consumer_Received(object sender, BasicDeliverEventArgs e)
         {
-            var body = e.Body;
-            var stock_code = Encoding.UTF8.GetString(body);
-            SendStockMessage(stock_code, e.Exchange);
+            SendStockMessage(e.Body, e.Exchange);
         }
 
-        public static void SendStockMessage(string stock_code, string queue)
+        void SendStockMessage(byte[] body, string queue)
         {
             using (var wcfClient = new StockServiceReference.StockServiceClient())
             {
-                var stock = wcfClient.GetStock(stock_code);
+                var queueMessage = wcfClient.FromByteArray(body);
+                var stock = wcfClient.GetStock(queueMessage.Message);
                 if (stock.Success)
-                    wcfClient.SendMessage($"{stock.Symbol} quote is {stock.CloseTyped.ToString("C2")} per share", queue, null);
+                    wcfClient.SendMessage($"{stock.Symbol} quote is {stock.CloseTyped.ToString("C2")} per share", queue, null, queueMessage.UserName);
                 else
-                    wcfClient.SendMessage(stock.ErrorMessage, queue, null);
+                    wcfClient.SendMessage(stock.ErrorMessage, queue, null, queueMessage.UserName);
                 wcfClient.Close();
             }
         }

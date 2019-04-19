@@ -9,23 +9,16 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using ChatWebApplication.Models;
+using System.Threading.Tasks;
 
 namespace ChatWebApplication.Controllers
 {
     [Authorize]
     public class ChatController : Controller
     {
-        private ChatModel db = new ChatModel();
-
-        List<Chat> ChatSession
-        {
-            get { return (List<Chat>)Session["ChatSession"]; }
-            set { Session["ChatSession"] = value; }
-        }
-
         public ActionResult Index()
         {
-            return View(new Chat());
+            return View("IndexSignal");
         }
 
         public ActionResult ChatPartialView()
@@ -34,52 +27,69 @@ namespace ChatWebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostMessage(Chat model)
+        public async Task<ActionResult> PostMessage(Chat model)
         {
             if (ModelState.IsValid)
-            {
-                if (model.Message.Contains("/stock="))
-                {
-                    var split = model.Message.Split('=');
-                    using (var wcfClient = new StockServiceReference.StockServiceClient())
-                    {
-                        wcfClient.SendMessage(split[1], "request", User.Identity.GetUserId());
-                        wcfClient.Close();
-                    }
-                }
-                else
-                {
-                    model.UserName = User.Identity.GetUserName();
-                    model.TimeStamp = DateTime.Now.ToFileTime();
-                    db.Chat.Add(model);
-                    db.SaveChanges();
-                }
-            }
+                await SendSaveMessage(model);
             return PartialView("ChatPartialView", GetData());
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> PostMessageSignal(string message)
+        {
+            var result = new JsonResult();
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                var chat = await SendSaveMessage(new Chat { Message = message });
+                if (chat != null)
+                    result.Data = new { success = true, username = chat.UserName, message = chat.Message, timestamp = chat.TimeStamp };
+                else
+                    result.Data = new { success = false };
+            }
+            else
+                result.Data = new { success = false };
+
+            return result;
+        }
+
+        async Task<Chat> SendSaveMessage(Chat model)
+        {
+            if (model.Message.Contains("/stock="))
+            {
+                var split = model.Message.Split('=');
+                await SendMessage(split[1]);
+                return null;
+            }
+            else
+            {
+                await SaveModel(model);
+                return model;
+            }
+        }
+
+        async Task SendMessage(string message)
+        {
+            using (var wcfClient = new StockServiceReference.StockServiceClient())
+            {
+                await wcfClient.SendMessageAsync(message, "request", "response", User.Identity.Name);
+                wcfClient.Close();
+            }
+        }
+
+        async Task SaveModel(Chat model)
+        {
+            ChatModel db = new ChatModel();
+            model.UserName = User.Identity.GetUserName();
+            model.TimeStamp = DateTime.Now.ToFileTime();
+            db.Chat.Add(model);
+            await db.SaveChangesAsync();
         }
 
         object GetData()
         {
-            List<string> messages;
-            using (var wcfClient = new ChatWebApplication.StockServiceReference.StockServiceClient())
-            {
-                messages = wcfClient.GetMessages(User.Identity.GetUserId());
-                wcfClient.Close();
-            }
-
-            if (ChatSession != null && ChatSession.Count > 0)
-            {
-                var maxTimeStamp = ChatSession.Max(c => c.TimeStamp);
-                var chatsToAdd = db.Chat.Where(r => r.TimeStamp > maxTimeStamp).ToList();
-                ChatSession.AddRange(chatsToAdd);
-            }
-            else
-                ChatSession = db.Chat.OrderByDescending(r => r.TimeStamp).Take(50).ToList();
-
-            if (messages.Any())
-                ChatSession.AddRange(messages.Select(r => new Chat { Message = r, TimeStamp = DateTime.Now.ToFileTime(), UserName = "Bot" }));
-
-            return ChatSession.OrderByDescending(r => r.TimeStamp).Take(50);
+            ChatModel db = new ChatModel();
+            return db.Chat.OrderByDescending(r => r.TimeStamp).Take(50).ToList();
         }
     }
 }
