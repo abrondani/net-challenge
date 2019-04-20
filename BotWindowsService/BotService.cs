@@ -7,7 +7,7 @@ namespace BotWindowsService
     public partial class BotService : ServiceBase
     {
         ServiceHost _serviceHost;
-        StockController stockController;
+        QueueListener _queueListener;
 
         public BotService()
         {
@@ -22,8 +22,8 @@ namespace BotWindowsService
 
         void StartListening()
         {
-            stockController = new StockController();
-            stockController.StartListening();
+            _queueListener = new QueueListener();
+            _queueListener.StartListening("request", true);
         }
 
         protected override void OnStart(string[] args)
@@ -34,7 +34,7 @@ namespace BotWindowsService
 
         protected override void OnStop()
         {
-            stockController.Dispose();
+            _queueListener.Dispose();
             _serviceHost.Close();
         }
     }

@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using ChatWebApplication.Models;
+using Microsoft.AspNet.Identity;
+using StockServiceController;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using ChatWebApplication.Models;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ChatWebApplication.Controllers
 {
@@ -58,7 +55,7 @@ namespace ChatWebApplication.Controllers
             if (model.Message.Contains("/stock="))
             {
                 var split = model.Message.Split('=');
-                await SendMessage(split[1]);
+                await StockController.SendCodeMessage(split[1], User.Identity.Name);
                 return null;
             }
             else
@@ -68,19 +65,10 @@ namespace ChatWebApplication.Controllers
             }
         }
 
-        async Task SendMessage(string message)
-        {
-            using (var wcfClient = new StockServiceReference.StockServiceClient())
-            {
-                await wcfClient.SendMessageAsync(message, "request", "response", User.Identity.Name);
-                wcfClient.Close();
-            }
-        }
-
         async Task SaveModel(Chat model)
         {
-            ChatModel db = new ChatModel();
-            model.UserName = User.Identity.GetUserName();
+            var db = new ChatModel();
+            model.UserName = User.Identity.Name;
             model.TimeStamp = DateTime.Now.ToFileTime();
             db.Chat.Add(model);
             await db.SaveChangesAsync();
@@ -88,7 +76,7 @@ namespace ChatWebApplication.Controllers
 
         object GetData()
         {
-            ChatModel db = new ChatModel();
+            var db = new ChatModel();
             return db.Chat.OrderByDescending(r => r.TimeStamp).Take(50).ToList();
         }
     }

@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QueueListener.cs" />
+    <Compile Include="QueueListenerEventArgs.cs" />
     <Compile Include="StockController.cs" />
     <Compile Include="Connected Services\StockServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
