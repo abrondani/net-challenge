@@ -1,8 +1,7 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
+﻿using StockServiceController;
+using StockServiceLibrary;
 using System;
 using System.ServiceModel;
-using System.Text;
 
 namespace StockConsoleApp
 {
@@ -10,16 +9,16 @@ namespace StockConsoleApp
     {
         static void Main(string[] args)
         {
-            var host = new ServiceHost(typeof(StockServiceLibrary.StockService));
+            var host = new ServiceHost(typeof(StockService));
             host.Open();
 
-            var stockController = new StockServiceController.StockController();
-            stockController.StartListening();
+            var queueListener = new QueueListener();
+            queueListener.StartListening("request", true);
 
             Console.WriteLine("Press <Enter> to stop the services.");
             Console.ReadLine();
 
-            stockController.Dispose();
+            queueListener.Dispose();
             host.Close();
         }
     }

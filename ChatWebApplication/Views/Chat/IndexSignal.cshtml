@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "IndexSignal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="margin-top:40px; ">
+    <div class="col-xs-9 col-sm-11">
+        <input type="text" id="message" class="form-control" maxlength="200" />
+    </div>
+    <div class="col-xs-3 col-sm-1">
+        <input id="sendmessage" type="button" class="btn btn-success" value="Send" />
+    </div>
+</div>
+<div class="row" style="margin-top:20px;" id="target">
+    @{ Html.RenderAction("ChatPartialView");}
+</div>
+@section scripts {
+
+    <script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+    <script>
+        $(function () {
+
+            var chat = $.connection.chatHub;
+
+            chat.client.addNewMessageToPage = function (name, message, timestamp) {
+                if ($('#target').children().length == 50)
+                    $('#target').children().last().remove()
+                $('#target').prepend('<div><h5><small class="text-muted">' + timestamp + '</small> ' + name + '</h5><p class="text-info">' + message + '</p></div>');
+            };
+
+            $.connection.hub.start().done(function () {
+                $('#sendmessage').click(function () {
+
+                    $.ajax(
+                        {
+                            type: "POST",
+                            url: "@(Url.Action("PostMessageSignal"))",
+                            data: { message: $('#message').val() },
+                            success: function (result) {
+
+                                if (result.success) {
+                                    chat.server.send(result.username, result.message, result.timestamp);
+                                }
+
+                                $('#message').val('').focus();
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+}
+

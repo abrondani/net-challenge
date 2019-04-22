@@ -22,12 +22,15 @@
         <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="queue" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="exchange" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="user_name" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SendMessageResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/StockServiceLibrary.DataContract" minOccurs="0" name="SendMessageResult" nillable="true" type="q2:QueueMessage" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetMessages">
@@ -40,7 +43,35 @@
   <xs:element name="GetMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetMessagesResult" nillable="true" type="q2:ArrayOfstring" />
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetMessagesResult" nillable="true" type="q3:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToByteArray">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/StockServiceLibrary.DataContract" minOccurs="0" name="obj" nillable="true" type="q4:QueueMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ToByteArrayResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ToByteArrayResult" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FromByteArray">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="data" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FromByteArrayResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/StockServiceLibrary.DataContract" minOccurs="0" name="FromByteArrayResult" nillable="true" type="q5:QueueMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
